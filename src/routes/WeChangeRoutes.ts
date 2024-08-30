@@ -26,21 +26,34 @@ router.post('/', async (req, res) => {
     }
 })
 
-//List Post
+//List all Posts
 router.get('/', async (req, res) => {
-    const allPosts = await prisma.post.findMany();
+    const allPosts = await prisma.post.findMany({
+        include: {
+            user: {
+                select: {
+                    id: true, 
+                    name: true, 
+                    username: true, 
+                    image: true, 
+                }}},
+});
     res.json(allPosts);
 })
 
 //Get One Post
 router.get('/:id', async (req, res) => {
     const{id}= req.params;
-    const post = await prisma.post.findUnique({where: {id: Number(id)}});
+    const post = await prisma.post.findUnique({
+        where: {id: Number(id)}, 
+        include:{user:true},
+
+});
     if(!post) {
         return res.status(404).json({error: "Post not found!"})
     }
     res.json(post)
-})
+});
 
 //Update Post-- no need to update there is no need to change a post only truth!
 // router.put('/:id', async(req, res) => {
