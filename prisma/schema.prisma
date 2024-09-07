@@ -16,13 +16,31 @@ model User {
   updated DateTime @updatedAt
 
   email String @unique
-  name String
-  username String @unique
+
+  name String? @unique
+  username String? @unique
   image String?
   bio String?
   isVerified Boolean @default(false)
 
   posts Post[]
+  tokens Token[]
+}
+
+model Token {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updated DateTime @updatedAt
+
+
+  type String //Email/API
+  emailToken String? @unique
+
+  valid Boolean @default(true)
+  expiration DateTime
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Post {

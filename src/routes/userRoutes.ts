@@ -14,7 +14,6 @@ curl -X POST -H "Content-Type: application/json" \ -d "{\"name\": \"Elon Musk\",
 //Create User
 router.post('/', async (req, res) => {
     const {email, name, username}= req.body;
-    console.log(email, name, username);
     try {
         const result = await prisma.user.create({
             data: {
