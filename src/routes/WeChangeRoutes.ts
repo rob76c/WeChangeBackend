@@ -22,6 +22,7 @@ router.post('/', async (req, res) => {
                 image,
                 userId: user.id // TODO manage based on auth user
             },
+            include: {user:true},
         });
 
 
@@ -41,14 +42,17 @@ router.get('/', async (req, res) => {
                     name: true, 
                     username: true, 
                     image: true, 
-                }}},
+                },
+            },
+        },
 });
     res.json(allPosts);
-})
+});
 
 //Get One Post
 router.get('/:id', async (req, res) => {
     const{id}= req.params;
+    console.log("Query tweet with id:", id);
     const post = await prisma.post.findUnique({
         where: {id: Number(id)}, 
         include:{user:true},
